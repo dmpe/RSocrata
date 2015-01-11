@@ -51,7 +51,7 @@ This project follows the guidelines of [semantic versioning](www.semver.org). Pl
 
 Minor (1.0.0 to 1.1.0) and patch (1.0.1 to 1.0.1) changes will be submitted to CRAN on a regular basis. CRAN usually does not accept more than one release a month.
 
-Beta and alpha versions are marked as 1.0.0-Beta or 1.0.0-Alpha, with builds of each pre-release being marked as "+001" (e.g., 1.0.0-Beta+003 for the third build).
+Builds are separated at the end with a "-", such as 1.0.0-8 to indicate the eigth development build. Build numbers should iterate when submitted to the dev branch. Release versions should eschew "-" before submission to CRAN.
 
 When submitting a pull request, revise the DESCRIPTION file with a proposed version number. We will likely ask you to revise it after we finish our code review.
 
