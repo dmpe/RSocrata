@@ -18,7 +18,6 @@ install:
   - ./travis-tool.sh github_package jimhester/covr
 script: 
   - ./travis-tool.sh run_tests
-  - Rscript -e 'source("R/tests/testRSocrata.R"); runAllTestsCI()'
 
 after_success:
   - Rscript -e 'library(covr);coveralls()'

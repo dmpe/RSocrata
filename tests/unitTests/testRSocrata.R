@@ -176,7 +176,3 @@ test.lsSocrata <- function() {
 test.lsSocrataInvalidURL <- function() {
     checkException(read.socrata("a.fake.url.being.tested"), "invalid url")
 }
-
-test.unequal <- function() {
-  checkTrue(2, 3) 
-}
