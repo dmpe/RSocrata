@@ -10,6 +10,7 @@ env:
   - R_MY_PKG="$(basename $TRAVIS_REPO_SLUG)"
 
 before_install:
+  - pwd
   - curl -OL http://raw.github.com/craigcitro/r-travis/master/scripts/travis-tool.sh
   - chmod 755 ./travis-tool.sh
   - ./travis-tool.sh bootstrap
@@ -20,6 +21,9 @@ script:
   - ./travis-tool.sh run_tests
 
 after_success:
+  - pwd
+  - ls
+  - cd tests
   - ls
   - Rscript -e 'library(covr);coveralls()'
 
