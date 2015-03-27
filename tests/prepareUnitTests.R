@@ -1,13 +1,12 @@
 library("RUnit")
 
-
 runAllTests <- function(){
-    if("tests" %in% list.files()){
-      path = "tests/unitTests"
-      pkgPath <- file.path(getwd(), "R")
-      } else { # Set paths during R CMD check
+    if(length(grep("Rcheck", getwd())) > 0){
       path = file.path(getwd(), "unitTests")
       pkgPath <- file.path(getwd(), "..", "00_pkg_src", "RSocrata", "R")
+    } else {
+      path = "tests/unitTests"
+      pkgPath <- file.path(getwd(), "R")
     }
     source(file.path(pkgPath, "RSocrata.R"))
         
