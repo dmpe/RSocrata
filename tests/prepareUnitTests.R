@@ -5,8 +5,13 @@ runAllTests <- function(){
       path = file.path(getwd(), "unitTests")
       pkgPath <- file.path(getwd(), "..", "00_pkg_src", "RSocrata", "R")
     } else {
-      path = "tests/unitTests"
-      pkgPath <- file.path(getwd(), "R")
+      if(length(grep("tests", getwd())) > 0){
+        path = "unitTests"
+        pkgPath <- file.path(getwd(), "..", "R")
+      } else {
+        path = "tests/unitTests"
+        pkgPath <- file.path(getwd(), "R")
+      }
     }
     source(file.path(pkgPath, "RSocrata.R"))
         
