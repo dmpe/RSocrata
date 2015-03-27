@@ -20,9 +20,6 @@ script:
   - ./travis-tool.sh run_tests
 
 after_success:
-  - cd tests
-  - ls
-  - cd ../
   - Rscript -e 'library(covr);coveralls()'
 
 after_failure:
