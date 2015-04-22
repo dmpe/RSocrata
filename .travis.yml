@@ -7,7 +7,8 @@
 language: c
 
 env:
-  - R_MY_PKG="$(basename $TRAVIS_REPO_SLUG)"
+  - global:
+    - WARNINGS_ARE_ERRORS=1
 
 before_install:
   - curl -OL http://raw.github.com/craigcitro/r-travis/master/scripts/travis-tool.sh
@@ -17,6 +18,7 @@ install:
   - ./travis-tool.sh install_deps
   - ./travis-tool.sh github_package jimhester/covr
 script: 
+  - Rscript -e "install.packages('roxygen2', repos='http://cran.us.r-project.org'); library(roxygen2); roxygen2::roxygenize(package.dir='.', roclets=c('rd', 'collate', 'namespace'))"
   - ./travis-tool.sh run_tests
 
 after_success:
