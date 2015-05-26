@@ -4,6 +4,7 @@ RSocrata
 **Master** 
 
 [![Linux build](https://img.shields.io/travis/Chicago/RSocrata.svg?style=flat-square&label=Linux build)](https://travis-ci.org/Chicago/RSocrata) [![Windows build](https://img.shields.io/appveyor/ci/Chicago/RSocrata/master.svg?style=flat-square&label=Windows build)](https://ci.appveyor.com/project/tomschenkjr/rsocrata/branch/master)
+
 **Dev**
 
 [![Build Status - Dev](https://img.shields.io/travis/Chicago/RSocrata.svg?style=flat-square&label=Linux build)](https://travis-ci.org/Chicago/RSocrata) [![Build status](https://img.shields.io/appveyor/ci/Chicago/RSocrata/dev.svg?style=flat-square&label=Windows build)](https://ci.appveyor.com/project/tomschenkjr/rsocrata/branch/dev)
