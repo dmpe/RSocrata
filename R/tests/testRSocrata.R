@@ -97,6 +97,12 @@ test.readSocrataCalendarDateShort <- function() {
 	checkEquals(0, dt$sec, "seconds")
 }
 
+test.readSocrataNADatesCsv {
+  # df <- read.socrata('http://data.cityofboston.gov/resource/awu8-dc52.csv?property_id=177808') # This was the original query which produced the error
+  ## The above statement is no longer valid because property_id 177808 is no longer online.
+  df <- read.socrata('http://data.cityofboston.gov/resource/awu8-dc52.csv') # Seems to fail with https, takes forever
+}
+
 test.isFourByFour <- function() {
 	checkTrue(isFourByFour("4334-bgaj"), "ok")
 	checkTrue(!isFourByFour("4334c-bgajc"), "11 characters instead of 9")
