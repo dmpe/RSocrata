@@ -12,7 +12,6 @@ r_github_packages:
   - hadley/httr
   - jeroenooms/jsonlite
   - jeroenooms/curl
-  - klutometis/roxygen
 
 before_install: 
   - Rscript -e "install.packages('roxygen2', repos='http://cran.us.r-project.org'); library(roxygen2); roxygen2::roxygenize(package.dir='.', roclets=c('rd', 'collate', 'namespace'))"
