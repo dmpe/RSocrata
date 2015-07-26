@@ -6,7 +6,7 @@
 \usage{
 read.socrata(url = NULL, app_token = NULL, domain = NULL,
   fourByFour = NULL, query = NULL, limit = 50000, offset = 0,
-  output = NULL, geo_what = "sp", geo_parse = FALSE)
+  output = "csv", geo_what = "sp", geo_parse = FALSE)
 }
 \arguments{
 \item{url}{- A Socrata resource URL, or a Socrata "human-friendly" URL,
@@ -47,12 +47,18 @@ Manages throttling and POSIX date-time conversions.
 \section{TODO}{
  \url{https://github.com/Chicago/RSocrata/issues/14}
 }
+
+\section{Issue}{
+ If you get something like \code{Error in rbind(deparse.level, ...) :
+numbers of columns of arguments do not match} when using "json" output, this is a known bug
+\url{https://github.com/Chicago/RSocrata/issues/19}! Use instead csv output for time being.
+}
 \examples{
 df_csv <- read.socrata(url = "http://soda.demo.socrata.com/resource/4334-bgaj.csv")
 df_geo <- read.socrata(url = "https://data.cityofchicago.org/resource/6zsd-86xi.geojson")
 df_manual <- read.socrata(domain = "http://data.cityofchicago.org/", fourByFour = "ydr8-5enu")
 df_manual2 <- read.socrata(domain = "http://data.cityofchicago.org/", fourByFour = "ydr8-5enu")
-df_manual3 <- read.socrata(domain = "http://data.cityofchicago.org/", fourByFour = "ydr8-5enu", output = "json")
+df_manual3 <- read.socrata(domain = "http://data.cityofchicago.org/", fourByFour = "ydr8-5enu", output = "csv")
 df_manual4 <- read.socrata(domain = "https://data.cityofchicago.org/", fourByFour = "6zsd-86xi", output = "geojson", geo_what = "list", geo_parse = TRUE)
 }
 \author{

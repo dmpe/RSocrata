@@ -91,6 +91,9 @@ getContentAsDataFrame <- function(response, geo_parse = NULL, geo_what = NULL) {
 #' @param geo_parse - (logical) To parse geojson to data.frame like structures if possible or not. Default: FALSE (not)
 #' 
 #' @section TODO: \url{https://github.com/Chicago/RSocrata/issues/14}
+#' @section Issue: If you get something like \code{Error in rbind(deparse.level, ...) : 
+#' numbers of columns of arguments do not match} when using "json" output, this is a known bug 
+#' \url{https://github.com/Chicago/RSocrata/issues/19}! Use instead csv output for time being. 
 #'
 #' @return a data frame with POSIX dates if csv or json. Return a list (default) if geojson.
 #' @author Hugh J. Devlin, Ph. D. \email{Hugh.Devlin@@cityofchicago.org}
@@ -100,7 +103,7 @@ getContentAsDataFrame <- function(response, geo_parse = NULL, geo_what = NULL) {
 #' df_geo <- read.socrata(url = "https://data.cityofchicago.org/resource/6zsd-86xi.geojson")
 #' df_manual <- read.socrata(domain = "http://data.cityofchicago.org/", fourByFour = "ydr8-5enu")
 #' df_manual2 <- read.socrata(domain = "http://data.cityofchicago.org/", fourByFour = "ydr8-5enu")
-#' df_manual3 <- read.socrata(domain = "http://data.cityofchicago.org/", fourByFour = "ydr8-5enu", output = "json")
+#' df_manual3 <- read.socrata(domain = "http://data.cityofchicago.org/", fourByFour = "ydr8-5enu", output = "csv")
 #' df_manual4 <- read.socrata(domain = "https://data.cityofchicago.org/", fourByFour = "6zsd-86xi", output = "geojson", geo_what = "list", geo_parse = TRUE)
 #' 
 #' @importFrom httr parse_url build_url
@@ -110,7 +113,7 @@ getContentAsDataFrame <- function(response, geo_parse = NULL, geo_what = NULL) {
 #' @export
 read.socrata <- function(url = NULL, app_token = NULL, domain = NULL, fourByFour = NULL, 
                          query = NULL, limit = 50000, offset = 0, 
-                         output = NULL, geo_what = "sp", geo_parse = FALSE) {
+                         output = "csv", geo_what = "sp", geo_parse = FALSE) {
   
   if(is.null(url) == TRUE) {
     buildUrl <- paste0(domain, "resource/", fourByFour, ".", output)
@@ -125,7 +128,6 @@ read.socrata <- function(url = NULL, app_token = NULL, domain = NULL, fourByFour
   if(!(mimeType %in% c("text/csv","application/json", "application/vnd.geo+json"))) {
     stop(mimeType, " not a supported data format. Try JSON, CSV or GeoJSON.")
   }
-
   
   if(mimeType == "application/vnd.geo+json") {   # if geojson
     response <- checkResponse(validUrl)
@@ -142,10 +144,10 @@ read.socrata <- function(url = NULL, app_token = NULL, domain = NULL, fourByFour
     
     ## More to come? Loop over pages implicitly
     while(nrow(results) != rowCount) { 
-      query_url <- paste0(validUrl, ifelse(is.null(parsedUrl$query), "?", "&"), "$offset=", nrow(results))
+      query_url <- paste0(validUrl, ifelse(is.null(parsedUrl$query), "?", "&"), "$offset=", nrow(results), "&$limit=", limit)
       response <- checkResponse(query_url)
       page <- getContentAsDataFrame(response)
-      results <- do.call(rbind, lapply(results, page)) # accumulate
+      results <- plyr::rbind.fill(results, page) # accumulate
     }	
     
     # Convert Socrata calendar dates to POSIX format
