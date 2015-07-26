@@ -129,7 +129,7 @@ read.socrata <- function(url = NULL, app_token = NULL, domain = NULL, fourByFour
     stop(mimeType, " not a supported data format. Try JSON, CSV or GeoJSON.")
   }
   
-  if(mimeType == "application/vnd.geo+json") {   # if geojson
+  if(mimeType == "application/vnd.geo+json") {
     response <- checkResponse(validUrl)
     page <- getContentAsDataFrame(response, geo_what = geo_what, geo_parse = geo_parse)
     results <- page
