@@ -4,6 +4,7 @@ library(httr)
 library(jsonlite)
 library(mime)
 library(geojsonio)
+library(plyr)
 
 context("Geospatial JSON")
 

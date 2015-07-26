@@ -6,7 +6,7 @@
 \usage{
 read.socrata(url = NULL, app_token = NULL, domain = NULL,
   fourByFour = NULL, query = NULL, limit = 50000, offset = 0,
-  output = c("csv", "json", "geojson"))
+  output = NULL, geo_what = "sp", geo_parse = FALSE)
 }
 \arguments{
 \item{url}{- A Socrata resource URL, or a Socrata "human-friendly" URL,
@@ -30,9 +30,16 @@ portal \url{http://dev.socrata.com/consumers/getting-started.html}}
 \item{limit}{- defaults to the max of 50000. See \url{http://dev.socrata.com/docs/paging.html}.}
 
 \item{offset}{- defaults to the max of 0. See \url{http://dev.socrata.com/docs/paging.html}.}
+
+\item{output}{- defaults to csv; one of \code{c("csv", "json", "geojson")}.
+In the case of GeoJSON, it can be either a data frame or}
+
+\item{geo_what}{- What to return if geojson is choosen. One of list or \code{\link{sp}}. Default: list.}
+
+\item{geo_parse}{- (logical) To parse geojson to data.frame like structures if possible or not. Default: FALSE (not)}
 }
 \value{
-a data frame with POSIX dates
+a data frame with POSIX dates if csv or json. Return a list (default) if geojson.
 }
 \description{
 Manages throttling and POSIX date-time conversions.
@@ -41,9 +48,12 @@ Manages throttling and POSIX date-time conversions.
  \url{https://github.com/Chicago/RSocrata/issues/14}
 }
 \examples{
-df <- read.socrata("http://soda.demo.socrata.com/resource/4334-bgaj.csv")
-dfgjs <- read.socrata(url = "https://data.cityofchicago.org/resource/6zsd-86xi.geojson")
-df2 <- read.socrata(domain = "http://data.cityofchicago.org", fourByFour = "ydr8-5enu")
+df_csv <- read.socrata(url = "http://soda.demo.socrata.com/resource/4334-bgaj.csv")
+df_geo <- read.socrata(url = "https://data.cityofchicago.org/resource/6zsd-86xi.geojson")
+df_manual <- read.socrata(domain = "http://data.cityofchicago.org/", fourByFour = "ydr8-5enu")
+df_manual2 <- read.socrata(domain = "http://data.cityofchicago.org/", fourByFour = "ydr8-5enu")
+df_manual3 <- read.socrata(domain = "http://data.cityofchicago.org/", fourByFour = "ydr8-5enu", output = "json")
+df_manual4 <- read.socrata(domain = "https://data.cityofchicago.org/", fourByFour = "6zsd-86xi", output = "geojson", geo_what = "list", geo_parse = TRUE)
 }
 \author{
 Hugh J. Devlin, Ph. D. \email{Hugh.Devlin@cityofchicago.org}

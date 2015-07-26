@@ -45,7 +45,7 @@ This depends on packages such as `rgdal` & `rgeos` (both on CRAN), which additio
 
 `sudo apt-get install libgdal1-dev libgdal-dev libgeos-c1 libproj-dev`
 
-Then install both of them use:
+Then install both of them using:
 
 ```
 install.packages("rgdal")

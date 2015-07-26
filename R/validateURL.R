@@ -18,10 +18,10 @@
 #' validateUrl(url = "a.fake.url.being.tested", app_token = "ew2rEMuESuzWPqMkyPfOSGJgE")
 #' }
 #' validateUrl(url = "https://soda.demo.socrata.com/dataset/USGS-Earthquake-Reports/4334-bgaj", 
-#' app_token="ew2rEMuESuzWPqMkyPfOSGJgE")
+#' app_token="ew2rEMuESuzWPqMkyPfOSGJgE", output = "json")
 #' 
 #' @export
-validateUrl <- function(url = "", app_token = NULL) {
+validateUrl <- function(url = "", app_token = NULL, output = NULL) {
   parsedUrl <- httr::parse_url(url)
   
   if(is.null(parsedUrl$scheme) | is.null(parsedUrl$hostname) | is.null(parsedUrl$path)) {
@@ -47,7 +47,7 @@ validateUrl <- function(url = "", app_token = NULL) {
     
   } 
   
-  if(substr(parsedUrl$path, 1, 9) == 'resource/') {
+  if(substr(parsedUrl$path, 1, 9) == "resource/") {
     return(httr::build_url(parsedUrl)) # resource url already
   }
   
@@ -55,7 +55,7 @@ validateUrl <- function(url = "", app_token = NULL) {
   if(!isFourByFour(fourByFour)) {
     stop(fourByFour, " is not a valid Socrata dataset unique identifier.")
   } else {
-    parsedUrl$path <- paste0('resource/', fourByFour, '.csv')
+    parsedUrl$path <- paste0("resource/", fourByFour, ".", output)
     httr::build_url(parsedUrl) 
   }
   
