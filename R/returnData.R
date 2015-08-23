@@ -36,7 +36,7 @@ getContentAsDataFrame <- function(response, geo_parse = NULL, geo_what = NULL) {
          "text/csv" = 
            httr::content(response), # automatic parsing
          "application/json" = 
-           if(httr::content(response, as = "text") == "[ ]") { # empty json?
+           if (httr::content(response, as = "text") == "[ ]") { # empty json?
              data.frame() # empty data frame
            } else {
              data.frame(t(sapply(httr::content(response), unlist)), stringsAsFactors = FALSE)
@@ -107,6 +107,9 @@ read.socrata <- function(url = NULL, app_token = NULL, domain = NULL, fourByFour
   # check url syntax, allow human-readable Socrata url
   validUrl <- validateUrl(url, app_token) 
   parsedUrl <- httr::parse_url(validUrl)
+  parsedUrl$query <- paste0("$limit=", limit, "&$order=:id")
+  validUrl <- httr::build_url(parsedUrl)
+  
   
   mimeType <- mime::guess_type(parsedUrl$path)
   if (!(mimeType %in% c("text/csv","application/json", "application/vnd.geo+json"))) {
