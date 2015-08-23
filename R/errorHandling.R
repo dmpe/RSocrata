@@ -6,10 +6,11 @@
 # but one that is not compatible with RSocrata.
 # See \url{https://github.com/Chicago/RSocrata/issues/16}
 # 
-# @param rsp - \code{\link{httr::response}} response
-# @importFrom httr stop_for_status
+# @param url - SOPA url
+# @importFrom httr stop_for_status GET
 #
-errorHandling <- function(rsp = NULL) {
+errorHandling <- function(url = "") {
+  rsp <- httr::GET(url)
   
   if (rsp$status_code == 200) {
     invisible("OK. Your request was successful.")
@@ -39,5 +40,7 @@ errorHandling <- function(rsp = NULL) {
   } else {
     httr::stop_for_status(rsp)
   }
+  
+  return(rsp)
   
 }

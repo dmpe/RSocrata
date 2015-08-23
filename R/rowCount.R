@@ -27,7 +27,7 @@ getQueryRowCount <- function(urlParsed, mimeType) {
                    urlParsed[[c('path')]],
                    cntQueryText)
   ## Execute the query to count the rows
-  totalRowsResult <- httr::GET(cntUrl)
+  totalRowsResult <- errorHandling(cntUrl)
   
   ## Parsing the result depends on the mime type
   if (mimeType == "application/json") {

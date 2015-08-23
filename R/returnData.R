@@ -9,24 +9,6 @@
 # library("mime")       # for guessing mime type
 # library("geojsonio")  # for geospatial json
 
-#' Wrap httr GET in some diagnostics
-#' 
-#' In case of failure, report error details from Socrata.
-#' 
-#' @param url - Socrata Open Data Application Program Interface (SODA) query, a URL
-#' @return httr a response object
-#' @importFrom httr GET
-#' @author Hugh J. Devlin, Ph. D. \email{Hugh.Devlin@@cityofchicago.org}
-#' 
-#' @noRd
-checkResponse <- function(url = "") {
-  response <- httr::GET(url)
-  
-  errorHandling(response)
-  
-  return(response)
-}
-
 #' Content parsers
 #'
 #' Return a data frame for csv or json
@@ -132,12 +114,12 @@ read.socrata <- function(url = NULL, app_token = NULL, domain = NULL, fourByFour
   }
   
   if (mimeType == "application/vnd.geo+json") {
-    response <- checkResponse(validUrl)
+    response <- errorHandling(validUrl)
     page <- getContentAsDataFrame(response, geo_what = geo_what, geo_parse = geo_parse)
     results <- page
     
   } else { # if csv or json
-    response <- checkResponse(validUrl)
+    response <- errorHandling(validUrl)
     page <- getContentAsDataFrame(response)
     results <- page
     dataTypes <- getSodaTypes(response)
@@ -147,15 +129,15 @@ read.socrata <- function(url = NULL, app_token = NULL, domain = NULL, fourByFour
     ## More to come? Loop over pages implicitly
     while (nrow(results) != rowCount) { 
       query_url <- paste0(validUrl, ifelse(is.null(parsedUrl$query), "?", "&"), "$offset=", nrow(results), "&$limit=", limit)
-      response <- checkResponse(query_url)
+      response <- errorHandling(validUrl)
       page <- getContentAsDataFrame(response)
-      results <- plyr::rbind.fill(results, page) # accumulate
+      results <- plyr::rbind.fill(results, page) # accumulate data
     }	
     
     # Convert Socrata calendar dates to POSIX format
     # Check for column names that are not NA and which dataType is a "calendar_date". If there are some, 
     # then convert them to POSIX format
-    for(columnName in colnames(page)[!is.na(dataTypes[fieldName(colnames(page))]) & dataTypes[fieldName(colnames(page))] == "calendar_date"]) {
+    for (columnName in colnames(page)[!is.na(dataTypes[fieldName(colnames(page))]) & dataTypes[fieldName(colnames(page))] == "calendar_date"]) {
       results[[columnName]] <- posixify(results[[columnName]])
     }
     

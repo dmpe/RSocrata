@@ -12,7 +12,7 @@
 # isFourByFour(fourByFour = "4334-bgaj")
 # isFourByFour("433-bgaj")
 # isFourByFour(fourByFour = "4334-!gaj")
-#
+#' @export
 isFourByFour <- function(fourByFour = "") {
   
   if (nchar(fourByFour) == 9) {
@@ -39,7 +39,7 @@ isFourByFour <- function(fourByFour = "") {
 # @author Hugh J. Devlin, Ph. D. \email{Hugh.Devlin@@cityofchicago.org}
 # @examples
 # fieldName("Number.of.Stations") # number_of_stations
-# 
+#' @export
 fieldName <- function(humanName = "") {
   tolower(gsub('\\.', '_', humanName))
 }
@@ -57,7 +57,7 @@ fieldName <- function(humanName = "") {
 # posixify("2014-10-13T23:00:00")
 # posixify("09/14/2012 10:38:01 PM")
 # posixify("09/14/2012")
-# 
+#' @export
 posixify <- function(x = "") {
   
   # https://github.com/Chicago/RSocrata/issues/24
