@@ -4,7 +4,7 @@
 \alias{validateUrl}
 \title{Convert, if necessary, URL to valid REST API URL supported by Socrata.}
 \usage{
-validateUrl(url = "", app_token = NULL, output = NULL)
+validateUrl(url = "", app_token = NULL, output = "csv")
 }
 \arguments{
 \item{url}{- a string; character vector of length one}
@@ -13,7 +13,7 @@ validateUrl(url = "", app_token = NULL, output = NULL)
 portal \url{http://dev.socrata.com/consumers/getting-started.html}}
 }
 \value{
-a - valid Url
+a valid URL
 }
 \description{
 Will convert a human-readable URL to a valid REST API call

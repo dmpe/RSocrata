@@ -10,7 +10,7 @@
 #' @param url - a string; character vector of length one
 #' @param app_token - a string; SODA API token used to query the data 
 #' portal \url{http://dev.socrata.com/consumers/getting-started.html}
-#' @return a - valid Url
+#' @return a valid URL
 #' @importFrom httr parse_url build_url
 #' @author Tom Schenk Jr \email{tom.schenk@@cityofchicago.org}
 #' @examples 
@@ -21,7 +21,7 @@
 #' app_token="ew2rEMuESuzWPqMkyPfOSGJgE", output = "json")
 #' 
 #' @export
-validateUrl <- function(url = "", app_token = NULL, output = NULL) {
+validateUrl <- function(url = "", app_token = NULL, output = "csv") {
   parsedUrl <- httr::parse_url(url)
   
   if(is.null(parsedUrl$scheme) | is.null(parsedUrl$hostname) | is.null(parsedUrl$path)) {

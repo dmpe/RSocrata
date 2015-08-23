@@ -1,19 +1,18 @@
-#' Checks the validity of the syntax for a potential Socrata dataset Unique Identifier, also known as a 4x4.
-#'
-#' @description Will check the validity of a potential dataset unique identifier
-#' supported by Socrata. It will provide an exception if the syntax
-#' does not align to Socrata unique identifiers. It only checks for
-#' the validity of the syntax, but does not check if it actually exists.
-#' 
-#' @param fourByFour - a string; character vector of length one
-#' @return TRUE if is valid Socrata unique identifier, FALSE otherwise
-#' @author Tom Schenk Jr \email{tom.schenk@@cityofchicago.org}
-#' @examples 
-#' isFourByFour(fourByFour = "4334-bgaj")
-#' isFourByFour("433-bgaj")
-#' isFourByFour(fourByFour = "4334-!gaj")
-#' 
-#' @noRd
+# Checks the validity of the syntax for a potential Socrata dataset Unique Identifier, also known as a 4x4.
+#
+# @description Will check the validity of a potential dataset unique identifier
+# supported by Socrata. It will provide an exception if the syntax
+# does not align to Socrata unique identifiers. It only checks for
+# the validity of the syntax, but does not check if it actually exists.
+# 
+# @param fourByFour - a string; character vector of length one
+# @return TRUE if is valid Socrata unique identifier, FALSE otherwise
+# @author Tom Schenk Jr \email{tom.schenk@@cityofchicago.org}
+# @examples 
+# isFourByFour(fourByFour = "4334-bgaj")
+# isFourByFour("433-bgaj")
+# isFourByFour(fourByFour = "4334-!gaj")
+#
 isFourByFour <- function(fourByFour = "") {
   
   if (nchar(fourByFour) == 9) {
@@ -28,39 +27,37 @@ isFourByFour <- function(fourByFour = "") {
   
 }
 
-#' Convert Socrata human-readable column name to field name
-#' 
-#' @description Convert Socrata human-readable column name,
-#' as it might appear in the first row of data,
-#' to field name as it might appear in the HTTP header;
-#' that is, lower case, periods replaced with underscores
-#' 
-#' @param humanName - a Socrata human-readable column name
-#' @return Socrata field name in lower case
-#' @author Hugh J. Devlin, Ph. D. \email{Hugh.Devlin@@cityofchicago.org}
-#' @examples
-#' fieldName("Number.of.Stations") # number_of_stations
-#' 
-#' @noRd
+# Convert Socrata human-readable column name to field name
+# 
+# @description Convert Socrata human-readable column name,
+# as it might appear in the first row of data,
+# to field name as it might appear in the HTTP header;
+# that is, lower case, periods replaced with underscores
+# 
+# @param humanName - a Socrata human-readable column name
+# @return Socrata field name in lower case
+# @author Hugh J. Devlin, Ph. D. \email{Hugh.Devlin@@cityofchicago.org}
+# @examples
+# fieldName("Number.of.Stations") # number_of_stations
+# 
 fieldName <- function(humanName = "") {
   tolower(gsub('\\.', '_', humanName))
 }
 
-#' Convert Socrata calendar_date string to POSIX
-#' 
-#' @description Datasets will either specify what timezone they should be interpreted in, 
-#' or you can usually assume they are in the timezone of the publisher. See examples below too. 
-#' 
-#' @seealso \url{http://dev.socrata.com/docs/datatypes/floating_timestamp.html}
-#' @param x - character vector in one of possible Socrata calendar_date formats
-#' @return a POSIX date
-#' @author Hugh J. Devlin, Ph. D. \email{Hugh.Devlin@@cityofchicago.org}
-#' @examples 
-#' posixify("2014-10-13T23:00:00")
-#' posixify("09/14/2012 10:38:01 PM")
-#' posixify("09/14/2012")
-#' 
-#' @noRd
+# Convert Socrata calendar_date string to POSIX
+# 
+# @description Datasets will either specify what timezone they should be interpreted in, 
+# or you can usually assume they are in the timezone of the publisher. See examples below too. 
+# 
+# @seealso \url{http://dev.socrata.com/docs/datatypes/floating_timestamp.html}
+# @param x - character vector in one of possible Socrata calendar_date formats
+# @return a POSIX date
+# @author Hugh J. Devlin, Ph. D. \email{Hugh.Devlin@@cityofchicago.org}
+# @examples 
+# posixify("2014-10-13T23:00:00")
+# posixify("09/14/2012 10:38:01 PM")
+# posixify("09/14/2012")
+# 
 posixify <- function(x = "") {
   
   # https://github.com/Chicago/RSocrata/issues/24

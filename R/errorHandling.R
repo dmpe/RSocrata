@@ -1,15 +1,14 @@
-#' Provides error handling functionality
-#'
-#' @description Based on \url{http://dev.socrata.com/docs/response-codes.html}
-#' 
-#' @section TODO: Add messages that alert the user on the URL being valid, 
-#' but one that is not compatible with RSocrata.
-#' See \url{https://github.com/Chicago/RSocrata/issues/16}
-#' 
-#' @param rsp - \code{\link{httr::response}} response
-#' @importFrom httr stop_for_status
-#' 
-#' @noRd
+# Provides error handling functionality
+#
+# @description Based on \url{http://dev.socrata.com/docs/response-codes.html}
+# 
+# @section TODO: Add messages that alert the user on the URL being valid, 
+# but one that is not compatible with RSocrata.
+# See \url{https://github.com/Chicago/RSocrata/issues/16}
+# 
+# @param rsp - \code{\link{httr::response}} response
+# @importFrom httr stop_for_status
+#
 errorHandling <- function(rsp = NULL) {
   
   if (rsp$status_code == 200) {

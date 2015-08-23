@@ -7,7 +7,7 @@
 # library("httr")       # for access to the HTTP header
 # library("jsonlite")   # for parsing data types from Socrata
 # library("mime")       # for guessing mime type
-# library("geojsonio") # for geospatial json
+# library("geojsonio")  # for geospatial json
 
 #' Wrap httr GET in some diagnostics
 #' 
@@ -103,8 +103,10 @@ getContentAsDataFrame <- function(response, geo_parse = NULL, geo_what = NULL) {
 #' df_geo <- read.socrata(url = "https://data.cityofchicago.org/resource/6zsd-86xi.geojson")
 #' df_manual <- read.socrata(domain = "http://data.cityofchicago.org/", fourByFour = "ydr8-5enu")
 #' df_manual2 <- read.socrata(domain = "http://data.cityofchicago.org/", fourByFour = "ydr8-5enu")
-#' df_manual3 <- read.socrata(domain = "http://data.cityofchicago.org/", fourByFour = "ydr8-5enu", output = "csv")
-#' df_manual4 <- read.socrata(domain = "https://data.cityofchicago.org/", fourByFour = "6zsd-86xi", output = "geojson", geo_what = "list", geo_parse = TRUE)
+#' df_manual3 <- read.socrata(domain = "http://data.cityofchicago.org/", fourByFour = "ydr8-5enu", 
+#' output = "csv")
+#' df_manual4 <- read.socrata(domain = "https://data.cityofchicago.org/", fourByFour = "6zsd-86xi", 
+#' output = "geojson", geo_what = "list", geo_parse = TRUE)
 #' 
 #' @importFrom httr parse_url build_url
 #' @importFrom mime guess_type
@@ -115,26 +117,26 @@ read.socrata <- function(url = NULL, app_token = NULL, domain = NULL, fourByFour
                          query = NULL, limit = 50000, offset = 0, 
                          output = "csv", geo_what = "sp", geo_parse = FALSE) {
   
-  if(is.null(url) == TRUE) {
+  if (is.null(url) == TRUE) {
     buildUrl <- paste0(domain, "resource/", fourByFour, ".", output)
     url <- httr::parse_url(buildUrl)
   }
   
   # check url syntax, allow human-readable Socrata url
-  validUrl <- validateUrl(url, app_token, output = output) 
+  validUrl <- validateUrl(url, app_token) 
   parsedUrl <- httr::parse_url(validUrl)
   
   mimeType <- mime::guess_type(parsedUrl$path)
-  if(!(mimeType %in% c("text/csv","application/json", "application/vnd.geo+json"))) {
+  if (!(mimeType %in% c("text/csv","application/json", "application/vnd.geo+json"))) {
     stop(mimeType, " not a supported data format. Try JSON, CSV or GeoJSON.")
   }
   
-  if(mimeType == "application/vnd.geo+json") {
+  if (mimeType == "application/vnd.geo+json") {
     response <- checkResponse(validUrl)
     page <- getContentAsDataFrame(response, geo_what = geo_what, geo_parse = geo_parse)
     results <- page
     
-  } else {   # if csv or json
+  } else { # if csv or json
     response <- checkResponse(validUrl)
     page <- getContentAsDataFrame(response)
     results <- page
@@ -143,7 +145,7 @@ read.socrata <- function(url = NULL, app_token = NULL, domain = NULL, fourByFour
     rowCount <- getQueryRowCount(parsedUrl, mimeType)
     
     ## More to come? Loop over pages implicitly
-    while(nrow(results) != rowCount) { 
+    while (nrow(results) != rowCount) { 
       query_url <- paste0(validUrl, ifelse(is.null(parsedUrl$query), "?", "&"), "$offset=", nrow(results), "&$limit=", limit)
       response <- checkResponse(query_url)
       page <- getContentAsDataFrame(response)

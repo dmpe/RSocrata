@@ -36,7 +36,7 @@ devtools::install_github("Chicago/RSocrata")
 
 **OR** 
 
-on [CRAN](http://cran.r-project.org/package=RSocrata)
+from [CRAN](http://cran.r-project.org/package=RSocrata):
 
 ```
 install.packages("RSocrata")
