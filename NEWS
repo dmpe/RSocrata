@@ -46,4 +46,5 @@ Deprecated ```httr::guess_media()``` and implemented ```mime::guess_type()```
     * New error handling function
     * New functions returning metadata and GeoJSON data (similar to the read.socrata)
     * Further work on queries
+    * Finally, fixing #27 + #24
 

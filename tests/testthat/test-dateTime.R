@@ -38,23 +38,23 @@ test_that("posixify new Floating Timestamp format", {
   expect_equal(47, dt$sec, label = "seconds")
 })
 
-# TODO
 test_that("NA datetime in source (JSON)", {
   # https://github.com/Chicago/RSocrata/issues/24
   # https://github.com/Chicago/RSocrata/issues/27
-  skip("Test finished") # working with bare jsonlite::fromJson; not implemented in RSocrata
+  skip("Test is just to big, over 600k. rows") 
   skip_on_cran()
   skip_on_travis()
-  df <- read.socrata(url = "https://data.cityofboston.gov/resource/awu8-dc52.json")
-  expect_equal(sum(is.na(df$target_dt)), 194)
-  expect_that(ncol(df) > 10)
+  df <- read.socrata(url = "https://data.cityofboston.gov/City-Services/311-Service-Requests/awu8-dc52")
+  df_met <- getMetadata("https://data.cityofboston.gov/City-Services/311-Service-Requests/awu8-dc52")
+  #   expect_equal(sum(is.na(df$target_dt)), 194)
+  expect_more_than(ncol(df_met[[2]]), 10)
 })
 
 
 context("Socrata Calendar")
 
 test_that("Calendar Date Long", {
-  df <- read.socrata(url = 'http://soda.demo.socrata.com/resource/4334-bgaj.csv')
+  df <- read.socrata(url = 'https://soda.demo.socrata.com/resource/4334-bgaj.csv')
   dt <- df$Datetime[1] # "2012-09-14 22:38:01"
   expect_equal("POSIXlt", class(dt)[1], label = "data type of a date")
   expect_equal(2012, dt$year + 1900, label = "year")

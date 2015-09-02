@@ -23,5 +23,6 @@ This can be either in format
 \examples{
 getMetadata(url = "http://data.cityofchicago.org/resource/y93d-d9e3.csv")
 getMetadata(url = "https://data.cityofchicago.org/resource/6zsd-86xi.json")
+getMetadata(url = "https://data.cityofboston.gov/City-Services/311-Service-Requests/awu8-dc52")
 }
 

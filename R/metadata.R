@@ -11,7 +11,8 @@
 #' @examples
 #' getMetadata(url = "http://data.cityofchicago.org/resource/y93d-d9e3.csv")
 #' getMetadata(url = "https://data.cityofchicago.org/resource/6zsd-86xi.json")
-#'
+#' getMetadata(url = "https://data.cityofboston.gov/City-Services/311-Service-Requests/awu8-dc52")
+#' 
 #' @return a list containing a number of rows and a data frame of metadata
 #'
 #' @importFrom jsonlite fromJSON
@@ -42,8 +43,8 @@ getMetadata <- function(url = "") {
   } else {
     as.numeric(gQRC$COUNT)
   }
-  
-  assign("metadata", list(rows, df), 1)
+  return(list(rows, df))
+#   assign("metadata", list(rows, df), 1)
 }
 
 # Return number of rows as specified in the metadata of the data set

@@ -99,6 +99,11 @@ clearnParams <- function(url = "") {
   return(cleanURL[[1]][1])
 }
 
+#' @export
+clearnParams2 <- function(url = "") {
+  cleanURL <- strsplit(url, "&",  fixed = TRUE)
+  return(cleanURL[[1]][1])
+}
 
 
 

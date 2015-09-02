@@ -21,7 +21,7 @@
 #' @param geo_what - what, see \link{geojson_read}
 #' @return data frame, possibly empty
 #' @noRd
-getContentAsDataFrame <- function(response, geo_parse = NULL, geo_what = NULL) {
+getContentAsDataFrame <- function(response) {
   
   mimeType <- response$header$'content-type'
   
@@ -86,8 +86,8 @@ getContentAsDataFrame <- function(response, geo_parse = NULL, geo_what = NULL) {
 #' @importFrom plyr rbind.fill
 #' 
 #' @export
-read.socrata <- function(url = NULL, app_token = NULL, domain = NULL, fourByFour = NULL, 
-                         query = NULL, limit = 50000, offset = 0, output = "csv") {
+read.socrata <- function(url = NULL, app_token = NULL, limit = 50000, domain = NULL, fourByFour = NULL, 
+                         query = NULL, offset = 0, output = "csv") {
   
   if (is.null(url) == TRUE) {
     buildUrl <- paste0(domain, "resource/", fourByFour, ".", output)
@@ -95,11 +95,12 @@ read.socrata <- function(url = NULL, app_token = NULL, domain = NULL, fourByFour
   }
   
   # check url syntax, allow human-readable Socrata url
-  validUrl <- validateUrl(paste0(url, "&$limit=", limit), app_token) 
-  parsedUrl <- httr::parse_url(validUrl)
-
-  mimeType <- mime::guess_type(parsedUrl$path)
-  if (!(mimeType %in% c("text/csv","application/json"))) {
+  validUrl <- validateUrl(url, app_token) 
+  parsedUrl <- httr::parse_url(paste0(validUrl, "&$limit=", limit))
+  
+  mimeType <- mime::guess_type(clearnParams2(parsedUrl$path))
+  
+  if (!(mimeType %in% c("text/csv","application/json", "text/plain"))) {
     stop(mimeType, " not a supported data format. Try JSON or CSV. For GeoJSON use: read.socrataGEO")
   }
   
@@ -108,7 +109,7 @@ read.socrata <- function(url = NULL, app_token = NULL, domain = NULL, fourByFour
   results <- page
   dataTypes <- getSodaTypes(response)
   
-  rowCount <- as.numeric(getMetadata(clearnParams(validUrl))$rowCount)
+  rowCount <- as.numeric(getMetadata(clearnParams(validUrl))[1])
   
   ## More to come? Loop over pages implicitly
   while (nrow(results) != rowCount) { 
