@@ -111,7 +111,7 @@ read.socrata <- function(url = NULL, app_token = NULL, limit = 50000, domain = N
   rowCount <- as.numeric(getMetadata(clearnParams(validUrl))[1])
   
   ## More to come? Loop over pages implicitly
-  while (nrow(results) <= rowCount) { 
+  while (nrow(results) < rowCount) { 
     query_url <- paste0(validUrl, ifelse(is.null(parsedUrl$query), "?", "&"), "$offset=", nrow(results), "&$limit=", limit)
     response <- errorHandling(query_url)
     page <- getContentAsDataFrame(response)
@@ -121,7 +121,8 @@ read.socrata <- function(url = NULL, app_token = NULL, limit = 50000, domain = N
   # Convert Socrata calendar dates to POSIX format
   # Check for column names that are not NA and which dataType is a "calendar_date". If there are some, 
   # then convert them to POSIX format
-  for (columnName in colnames(page)[!is.na(dataTypes[fieldName(colnames(page))]) & dataTypes[fieldName(colnames(page))] == "calendar_date"]) {
+  for (columnName in colnames(results)[!is.na(dataTypes[fieldName(colnames(results))]) 
+                                       & dataTypes[fieldName(colnames(results))] == "calendar_date"]) {
     results[[columnName]] <- posixify(results[[columnName]])
   }
   

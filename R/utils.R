@@ -105,15 +105,3 @@ clearnParams2 <- function(url = "") {
   return(cleanURL[[1]][1])
 }
 
-
-
-
-
-
-
-
-
-
-
-
-

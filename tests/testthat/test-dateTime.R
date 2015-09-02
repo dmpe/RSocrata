@@ -54,8 +54,8 @@ test_that("NA datetime in source (JSON)", {
 context("Socrata Calendar")
 
 test_that("Calendar Date Long", {
-  df <- read.socrata(url = 'https://soda.demo.socrata.com/resource/4334-bgaj.csv')
-  dt <- df$Datetime[1] # "2012-09-14 22:38:01"
+  df <- read.socrata(url = "https://soda.demo.socrata.com/resource/4334-bgaj.json")
+  dt <- df$datetime[1] # "2012-09-14 22:38:01"
   expect_equal("POSIXlt", class(dt)[1], label = "data type of a date")
   expect_equal(2012, dt$year + 1900, label = "year")
   expect_equal(9, dt$mon + 1, label = "month")

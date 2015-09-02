@@ -102,7 +102,7 @@ test_that("A JSON test with uneven row lengths", {
   skip("Not done") # working with bare jsonlite::fromJSON
   # Both should be OK
   data <- read.socrata(url = "https://data.cityofchicago.org/resource/kn9c-c2s2.json")
-  awqe <- read.socrata("http://data.ny.gov/resource/eda3-in2f.json")
+  awqe <- read.socrata(url = "http://data.ny.gov/resource/eda3-in2f.json")
   
   expect_that(ncol(data) > 10)
 })
