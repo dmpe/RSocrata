@@ -74,12 +74,10 @@ getContentAsDataFrame <- function(response) {
 #' @return a data frame with POSIX dates if csv or json. 
 #' @author Hugh J. Devlin, Ph. D. \email{Hugh.Devlin@@cityofchicago.org}
 #' 
-#' @examples
-#' df_csv <- read.socrata(url = "http://soda.demo.socrata.com/resource/4334-bgaj.csv")
-#' df_manual <- read.socrata(domain = "http://data.cityofchicago.org/", fourByFour = "ydr8-5enu")
-#' df_manual2 <- read.socrata(domain = "http://data.cityofchicago.org/", fourByFour = "ydr8-5enu")
-#' df_manual3 <- read.socrata(domain = "http://data.cityofchicago.org/", fourByFour = "ydr8-5enu", 
-#' output = "csv")
+# @examples
+# df_csv <- read.socrata(url = "http://soda.demo.socrata.com/resource/4334-bgaj.csv")
+# df_manual2<-read.socrata(domain="http://data.cityofchicago.org/",fourByFour = "ydr8-5enu")
+# df_manual3<-read.socrata(domain="http://data.cityofchicago.org/",fourByFour="ydr8-5enu",output="csv")
 #' 
 #' @importFrom httr parse_url build_url
 #' @importFrom mime guess_type

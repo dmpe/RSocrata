@@ -7,34 +7,34 @@ library(mime)
 context("read Socrata")
 
 test_that("read Socrata CSV", {
-  df <- read.socrata('https://soda.demo.socrata.com/resource/4334-bgaj.csv')
+  df <- read.socrata("https://soda.demo.socrata.com/resource/4334-bgaj.csv")
   expect_equal(1007, nrow(df), label="rows")
   expect_equal(9, ncol(df), label="columns")
 })
 
 test_that("read Socrata JSON", {
-  df <- read.socrata(url = 'https://soda.demo.socrata.com/resource/4334-bgaj.json')
+  df <- read.socrata(url = "https://soda.demo.socrata.com/resource/4334-bgaj.json")
   expect_equal(1007, nrow(df), label="rows")
   expect_equal(11, ncol(df), label="columns")
 })
 
 test_that("read Socrata No Scheme", {
-  expect_error(read.socrata('soda.demo.socrata.com/resource/4334-bgaj.csv'))
+  expect_error(read.socrata("soda.demo.socrata.com/resource/4334-bgaj.csv"))
 })
 
 test_that("read SoQL", {
-  df <- read.socrata('http://soda.demo.socrata.com/resource/4334-bgaj.csv?$select=region')
+  df <- read.socrata("http://soda.demo.socrata.com/resource/4334-bgaj.csv?$select=region")
   expect_equal(1007, nrow(df), label="rows")
   expect_equal(1, ncol(df), label="columns")
 })
 
 test_that("read SoQL Column Not Found (will fail)", {
   # SoQL API uses field names, not human names
-  expect_error(read.socrata('http://soda.demo.socrata.com/resource/4334-bgaj.csv?$select=Region'))
+  expect_error(read.socrata("http://soda.demo.socrata.com/resource/4334-bgaj.csv?$select=Region"))
 })
 
 test_that("URL is private (Unauthorized) (will fail)", {
-  expect_error(read.socrata('http://data.cityofchicago.org/resource/j8vp-2qpg.json'))
+  expect_error(read.socrata("http://data.cityofchicago.org/resource/j8vp-2qpg.json"))
 })
 
 test_that("read Socrata Human Readable", {
@@ -45,32 +45,38 @@ test_that("read Socrata Human Readable", {
 
 test_that("format is not supported", {
   # Unsupported data formats
-  expect_error(read.socrata('http://soda.demo.socrata.com/resource/4334-bgaj.xml'))
+  expect_error(read.socrata("http://soda.demo.socrata.com/resource/4334-bgaj.xml"))
 })
 
 context("Test Socrata with Token")
 
 test_that("CSV with Token", {
-  df <- read.socrata('https://soda.demo.socrata.com/resource/4334-bgaj.csv', app_token="ew2rEMuESuzWPqMkyPfOSGJgE")
+  df <- read.socrata(url = "https://soda.demo.socrata.com/resource/4334-bgaj.csv", 
+                     app_token="ew2rEMuESuzWPqMkyPfOSGJgE")
+  
   expect_equal(1007, nrow(df), label="rows")
   expect_equal(9, ncol(df), label="columns")  
 })
 
 
-test_that("readSocrataHumanReadableToken", {
-  df <- read.socrata('https://soda.demo.socrata.com/dataset/USGS-Earthquake-Reports/4334-bgaj', app_token="ew2rEMuESuzWPqMkyPfOSGJgE")
+test_that("read Socrata Human Readable Token", {
+  df <- read.socrata("https://soda.demo.socrata.com/dataset/USGS-Earthquake-Reports/4334-bgaj", 
+                     app_token="ew2rEMuESuzWPqMkyPfOSGJgE")
+  
   expect_equal(1007, nrow(df), label="rows")
   expect_equal(9, ncol(df), label="columns")  
 })
 
 test_that("API Conflict", {
-  df <- read.socrata('https://soda.demo.socrata.com/resource/4334-bgaj.csv?$$app_token=ew2rEMuESuzWPqMkyPfOSGJgE', app_token="ew2rEMuESuzWPqMkyPfOSUSER")
+  df <- read.socrata("https://soda.demo.socrata.com/resource/4334-bgaj.csv?$$app_token=ew2rEMuESuzWPqMkyPfOSGJgE", 
+                     app_token="ew2rEMuESuzWPqMkyPfOSUSER")
+  
   expect_equal(1007, nrow(df), label="rows")
   expect_equal(9, ncol(df), label="columns")
 })
 
 test_that("readAPIConflictHumanReadable", {
-  df <- read.socrata('https://soda.demo.socrata.com/dataset/USGS-Earthquake-Reports/4334-bgaj?$$app_token=ew2rEMuESuzWPqMkyPfOSGJgE', app_token="ew2rEMuESuzWPqMkyPfOSUSER")
+  df <- read.socrata("https://soda.demo.socrata.com/dataset/USGS-Earthquake-Reports/4334-bgaj?$$app_token=ew2rEMuESuzWPqMkyPfOSGJgE", app_token="ew2rEMuESuzWPqMkyPfOSUSER")
   expect_equal(1007, nrow(df), label="rows")
   expect_equal(9, ncol(df), label="columns")
 })
@@ -104,7 +110,7 @@ test_that("A JSON test with uneven row lengths", {
   data <- read.socrata(url = "https://data.cityofchicago.org/resource/kn9c-c2s2.json")
   awqe <- read.socrata(url = "http://data.ny.gov/resource/eda3-in2f.json")
   
-  expect_that(ncol(data) > 10)
+  expect_more_than(ncol(data), 10)
 })
 
 # TODO

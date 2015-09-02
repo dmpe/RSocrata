@@ -44,12 +44,11 @@ getMetadata <- function(url = "") {
     as.numeric(gQRC$COUNT)
   }
   return(list(rows, df))
-#   assign("metadata", list(rows, df), 1)
 }
 
 # Return number of rows as specified in the metadata of the data set
 #
-# @seealso Taken from \link{https://github.com/Chicago/RSocrata/blob/sprint7/R/getQueryRowCount.R}
+# @source Taken from \link{https://github.com/Chicago/RSocrata/blob/sprint7/R/getQueryRowCount.R}
 # @author Gene Leynes \email{gleynes@@gmail.com}
 #' @importFrom httr GET build_url content
 getQueryRowCount <- function(urlParsed, mimeType) {

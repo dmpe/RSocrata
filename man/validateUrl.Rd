@@ -27,8 +27,6 @@ resolve conflicting API token by deferring to original URL.
 \dontrun{
 validateUrl(url = "a.fake.url.being.tested", app_token = "ew2rEMuESuzWPqMkyPfOSGJgE")
 }
-validateUrl(url = "https://soda.demo.socrata.com/dataset/USGS-Earthquake-Reports/4334-bgaj",
-app_token="ew2rEMuESuzWPqMkyPfOSGJgE", output = "json")
 }
 \author{
 Tom Schenk Jr \email{tom.schenk@cityofchicago.org}
