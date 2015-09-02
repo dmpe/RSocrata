@@ -105,16 +105,15 @@ read.socrata <- function(url = NULL, app_token = NULL, limit = 50000, domain = N
   }
   
   response <- errorHandling(validUrl)
-  page <- getContentAsDataFrame(response)
-  results <- page
+  results <- getContentAsDataFrame(response)
   dataTypes <- getSodaTypes(response)
   
   rowCount <- as.numeric(getMetadata(clearnParams(validUrl))[1])
   
   ## More to come? Loop over pages implicitly
-  while (nrow(results) != rowCount) { 
+  while (nrow(results) <= rowCount) { 
     query_url <- paste0(validUrl, ifelse(is.null(parsedUrl$query), "?", "&"), "$offset=", nrow(results), "&$limit=", limit)
-    response <- errorHandling(validUrl)
+    response <- errorHandling(query_url)
     page <- getContentAsDataFrame(response)
     results <- plyr::rbind.fill(results, page) # accumulate data
   }	
