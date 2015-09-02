@@ -28,7 +28,7 @@ getContentAsDataFrame <- function(response, geo_parse = NULL, geo_what = NULL) {
   # skip optional parameters
   sep <- regexpr(';', mimeType)[1]
   
-  if(sep != -1) {
+  if (sep != -1) {
     mimeType <- substr(mimeType, 0, sep[1] - 1)
   }
   
@@ -40,9 +40,7 @@ getContentAsDataFrame <- function(response, geo_parse = NULL, geo_what = NULL) {
              data.frame() # empty data frame
            } else {
              data.frame(t(sapply(httr::content(response), unlist)), stringsAsFactors = FALSE)
-           }, 
-         "application/vnd.geo+json" =  # use geojson_read directly through its response link
-           geojsonio::geojson_read(response$url, method = "local", parse = geo_parse, what = geo_what)
+           }
   ) 
   
 }
@@ -57,38 +55,31 @@ getContentAsDataFrame <- function(response, geo_parse = NULL, geo_what = NULL) {
 #' requesting a comma-separated download format (.csv suffix), 
 #' May include SoQL parameters, and it is now assumed to include SODA \code{limit} 
 #' & \code{offset} parameters.
-#' Either use a compelete URL, e.g. \code{} or use parameters below to construct your URL. 
-#' But don't combine them.
+#' Either use a compelete URL or use parameters below to construct your URL. 
 #' @param app_token - a (non-required) string; SODA API token can be used to query the data 
 #' portal \url{http://dev.socrata.com/consumers/getting-started.html}
 #' @param query - Based on query language called the "Socrata Query Language" ("SoQL"), see 
 #' \url{http://dev.socrata.com/docs/queries.html}.
 #' @param limit - defaults to the max of 50000. See \url{http://dev.socrata.com/docs/paging.html}.
 #' @param offset - defaults to the max of 0. See \url{http://dev.socrata.com/docs/paging.html}.
-#' @param output - defaults to csv; one of \code{c("csv", "json", "geojson")}. 
-#' In the case of GeoJSON, it can be either a data frame or 
+#' @param output - defaults to csv; one of \code{"csv" or "json"}. 
 #' @param domain - A Socrata domain, e.g \url{http://data.cityofchicago.org} 
 #' @param fourByFour - a unique 4x4 identifier, e.g. "ydr8-5enu". See more \code{\link{isFourByFour}}
-#' @param geo_what - What to return if geojson is choosen. One of list or \code{\link{sp}}. Default: list.
-#' @param geo_parse - (logical) To parse geojson to data.frame like structures if possible or not. Default: FALSE (not)
-#' 
+
 #' @section TODO: \url{https://github.com/Chicago/RSocrata/issues/14}
 #' @section Issue: If you get something like \code{Error in rbind(deparse.level, ...) : 
 #' numbers of columns of arguments do not match} when using "json" output, this is a known bug 
 #' \url{https://github.com/Chicago/RSocrata/issues/19}! Use instead csv output for time being. 
 #'
-#' @return a data frame with POSIX dates if csv or json. Return a list (default) if geojson.
+#' @return a data frame with POSIX dates if csv or json. 
 #' @author Hugh J. Devlin, Ph. D. \email{Hugh.Devlin@@cityofchicago.org}
 #' 
 #' @examples
 #' df_csv <- read.socrata(url = "http://soda.demo.socrata.com/resource/4334-bgaj.csv")
-#' df_geo <- read.socrata(url = "https://data.cityofchicago.org/resource/6zsd-86xi.geojson")
 #' df_manual <- read.socrata(domain = "http://data.cityofchicago.org/", fourByFour = "ydr8-5enu")
 #' df_manual2 <- read.socrata(domain = "http://data.cityofchicago.org/", fourByFour = "ydr8-5enu")
 #' df_manual3 <- read.socrata(domain = "http://data.cityofchicago.org/", fourByFour = "ydr8-5enu", 
 #' output = "csv")
-#' df_manual4 <- read.socrata(domain = "https://data.cityofchicago.org/", fourByFour = "6zsd-86xi", 
-#' output = "geojson", geo_what = "list", geo_parse = TRUE)
 #' 
 #' @importFrom httr parse_url build_url
 #' @importFrom mime guess_type
@@ -96,8 +87,7 @@ getContentAsDataFrame <- function(response, geo_parse = NULL, geo_what = NULL) {
 #' 
 #' @export
 read.socrata <- function(url = NULL, app_token = NULL, domain = NULL, fourByFour = NULL, 
-                         query = NULL, limit = 50000, offset = 0, 
-                         output = "csv", geo_what = "sp", geo_parse = FALSE) {
+                         query = NULL, limit = 50000, offset = 0, output = "csv") {
   
   if (is.null(url) == TRUE) {
     buildUrl <- paste0(domain, "resource/", fourByFour, ".", output)
@@ -105,50 +95,67 @@ read.socrata <- function(url = NULL, app_token = NULL, domain = NULL, fourByFour
   }
   
   # check url syntax, allow human-readable Socrata url
-  validUrl <- validateUrl(url, app_token) 
+  validUrl <- validateUrl(paste0(url, "&$limit=", limit), app_token) 
   parsedUrl <- httr::parse_url(validUrl)
-  parsedUrl$query <- paste0("$limit=", limit, "&$order=:id")
-  validUrl <- httr::build_url(parsedUrl)
-  
-  
+
   mimeType <- mime::guess_type(parsedUrl$path)
-  if (!(mimeType %in% c("text/csv","application/json", "application/vnd.geo+json"))) {
-    stop(mimeType, " not a supported data format. Try JSON, CSV or GeoJSON.")
+  if (!(mimeType %in% c("text/csv","application/json"))) {
+    stop(mimeType, " not a supported data format. Try JSON or CSV. For GeoJSON use: read.socrataGEO")
   }
   
-  if (mimeType == "application/vnd.geo+json") {
-    response <- errorHandling(validUrl)
-    page <- getContentAsDataFrame(response, geo_what = geo_what, geo_parse = geo_parse)
-    results <- page
-    
-  } else { # if csv or json
+  response <- errorHandling(validUrl)
+  page <- getContentAsDataFrame(response)
+  results <- page
+  dataTypes <- getSodaTypes(response)
+  
+  rowCount <- as.numeric(getMetadata(clearnParams(validUrl))$rowCount)
+  
+  ## More to come? Loop over pages implicitly
+  while (nrow(results) != rowCount) { 
+    query_url <- paste0(validUrl, ifelse(is.null(parsedUrl$query), "?", "&"), "$offset=", nrow(results), "&$limit=", limit)
     response <- errorHandling(validUrl)
     page <- getContentAsDataFrame(response)
-    results <- page
-    dataTypes <- getSodaTypes(response)
-    
-    rowCount <- getQueryRowCount(parsedUrl, mimeType)
-    
-    ## More to come? Loop over pages implicitly
-    while (nrow(results) != rowCount) { 
-      query_url <- paste0(validUrl, ifelse(is.null(parsedUrl$query), "?", "&"), "$offset=", nrow(results), "&$limit=", limit)
-      response <- errorHandling(validUrl)
-      page <- getContentAsDataFrame(response)
-      results <- plyr::rbind.fill(results, page) # accumulate data
-    }	
-    
-    # Convert Socrata calendar dates to POSIX format
-    # Check for column names that are not NA and which dataType is a "calendar_date". If there are some, 
-    # then convert them to POSIX format
-    for (columnName in colnames(page)[!is.na(dataTypes[fieldName(colnames(page))]) & dataTypes[fieldName(colnames(page))] == "calendar_date"]) {
-      results[[columnName]] <- posixify(results[[columnName]])
-    }
-    
+    results <- plyr::rbind.fill(results, page) # accumulate data
+  }	
+  
+  # Convert Socrata calendar dates to POSIX format
+  # Check for column names that are not NA and which dataType is a "calendar_date". If there are some, 
+  # then convert them to POSIX format
+  for (columnName in colnames(page)[!is.na(dataTypes[fieldName(colnames(page))]) & dataTypes[fieldName(colnames(page))] == "calendar_date"]) {
+    results[[columnName]] <- posixify(results[[columnName]])
   }
   
   return(results)
 }
 
+#' Download GeoJSON data using geojsonio package
+#' 
+#' @param what - What to return format is choosen. One of list or \code{\link{sp}}. Default: list.
+#' @param parse - Parse geojson to data.frame like structures if possible or not. Default: FALSE (not)
+#' \link{geojsonio}
+#' 
+#' @importFrom geojsonio geojson_read
+#' @importFrom httr build_url parse_url
+#' @importFrom mime guess_type
+#' 
+#' @return Returns a \code{\link{sp}}, which is the default option here. 
+#' 
+#' @examples 
+#' df_geo <- read.socrataGEO(url = "https://data.cityofchicago.org/resource/6zsd-86xi.geojson")
+#' 
+#' @export
+read.socrataGEO <- function(url = NULL, limit = 50000, offset = 0, method = "local", what = "sp", parse = FALSE, ...) {
+  
+  validUrl <- httr::parse_url(url)
+  mimeType <- mime::guess_type(validUrl$path)
+  
+  if (mimeType == "application/vnd.geo+json") {
+    results <- geojsonio::geojson_read(url, method = method, parse = parse, what = what, ...)
+  } 
+  
+  return(results)
+  
+}
 
 #' Get the SoDA 2 data types
 #'

@@ -11,10 +11,6 @@ vignette: >
 
 ```{r}
 library(RSocrata)
-
-# for geo support
-library(leaflet)
-library(geojsonio)
 ```
 
 ### Example: Reading SoDA valid URLs
@@ -45,17 +41,22 @@ nrow(allSitesDataFrame) # Number of datasets
 allSitesDataFrame$title # Names of each dataset
 ```
 
-### Geo & Leaflet
+### GEO & Leaflet
 
 ```{r}
+# for geo support
+library(leaflet)
 
-geo_df <- geojson_read("https://data.cityofchicago.org/resource/6zsd-86xi.geojson", method = "local", parse = FALSE, what = "list")
+geo_df <- read.socrataGEO("https://data.cityofchicago.org/resource/6zsd-86xi.geojson", parse = FALSE, what = "list")
+
+# OR
+# library(geojsonio)
+# geo_df <- geojson_read("https://data.cityofchicago.org/resource/6zsd-86xi.geojson", method = "local", parse = FALSE, what = "list")
 
 m <- leaflet() %>%
   addGeoJSON(geo_df) %>%
-  setView(-87.6, 41.8, zoom = 10) %>% 
+  setView(-87.6, 41.8, zoom = 15) %>% 
   addTiles()
 m
-
 ```
 
