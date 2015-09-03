@@ -8,18 +8,34 @@ read.socrataGEO(url = NULL, limit = 50000, offset = 0, method = "local",
   what = "sp", parse = FALSE, ...)
 }
 \arguments{
-\item{what}{- What to return format is choosen. One of list or \code{\link{sp}}. Default: list.}
+\item{url}{- A Socrata resource URL, or a Socrata "human-friendly" URL,
+or Socrata Open Data Application Program Interface (SODA) query
+requesting a comma-separated download format (.csv suffix),
+May include SoQL parameters, and it is now assumed to include SODA \code{limit}
+& \code{offset} parameters.
+Either use a compelete URL or use parameters below to construct your URL.}
 
-\item{parse}{- Parse geojson to data.frame like structures if possible or not. Default: FALSE (not)
-\link{geojsonio}}
+\item{limit}{- defaults to the max of 50000. See \url{http://dev.socrata.com/docs/paging.html}.}
+
+\item{offset}{- defaults to the max of 0. See \url{http://dev.socrata.com/docs/paging.html}.}
+
+\item{method}{- \link{geojsonio}}
+
+\item{what}{- \link{geojsonio} What to return format is choosen. One of list (default) or \code{\link{sp}}.}
+
+\item{parse}{- \link{geojsonio} Parse geojson to data.frame like structures if possible or not. Default: FALSE (~not)}
+
+\item{...}{- other arguments from \link{geojsonio} package for geojson_read method}
 }
 \value{
-Returns a \code{\link{sp}}, which is the default option here.
+Returns a \code{\link{sp}} object, which is the default option here.
 }
 \description{
 Download GeoJSON data using geojsonio package
 }
 \examples{
+\dontrun{
 df_geo <- read.socrataGEO(url = "https://data.cityofchicago.org/resource/6zsd-86xi.geojson")
+}
 }
 

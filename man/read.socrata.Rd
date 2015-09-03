@@ -32,7 +32,7 @@ portal \url{http://dev.socrata.com/consumers/getting-started.html}}
 \item{output}{- defaults to csv; one of \code{"csv" or "json"}.}
 }
 \value{
-a data frame with POSIX dates if csv or json.
+a data frame with POSIX dates in csv or json format.
 }
 \description{
 Manages throttling and POSIX date-time conversions.
@@ -47,11 +47,12 @@ numbers of columns of arguments do not match} when using "json" output, this is 
 \url{https://github.com/Chicago/RSocrata/issues/19}! Use instead csv output for time being.
 }
 \examples{
+\dontrun{
 df_csv <- read.socrata(url = "http://soda.demo.socrata.com/resource/4334-bgaj.csv")
-df_manual <- read.socrata(domain = "http://data.cityofchicago.org/", fourByFour = "ydr8-5enu")
-df_manual2 <- read.socrata(domain = "http://data.cityofchicago.org/", fourByFour = "ydr8-5enu")
-df_manual3 <- read.socrata(domain = "http://data.cityofchicago.org/", fourByFour = "ydr8-5enu",
-output = "csv")
+df_manual2<-read.socrata(domain="http://data.cityofchicago.org/",fourByFour = "ydr8-5enu")
+df_manual3<-read.socrata(domain="http://data.cityofchicago.org/",
+fourByFour="ydr8-5enu",output="csv")
+}
 }
 \author{
 Hugh J. Devlin, Ph. D. \email{Hugh.Devlin@cityofchicago.org}

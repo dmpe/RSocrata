@@ -4,14 +4,16 @@
 #' 'http://data.cityofchicago.org/api/views/xzkq-xp2w/rows.json' or
 #' 'http://data.cityofchicago.org/api/views/xzkq-xp2w/columns.json', which this function also uses.
 #' 
-#' @param url - A Socrata resource URL, or a Socrata "human-friendly" URL
+#' @inheritParams read.socrata
 #' 
 #' @source \url{http://stackoverflow.com/a/29782941}
 #'
 #' @examples
-#' getMetadata(url = "http://data.cityofchicago.org/resource/y93d-d9e3.csv")
+#' \dontrun{
+#' asd <- getMetadata(url = "http://data.cityofchicago.org/resource/y93d-d9e3.csv")
 #' getMetadata(url = "https://data.cityofchicago.org/resource/6zsd-86xi.json")
-#' getMetadata(url = "https://data.cityofboston.gov/City-Services/311-Service-Requests/awu8-dc52")
+#' wqfef <- getMetadata(url = "https://data.cityofboston.gov/resource/awu8-dc52")
+#' }
 #' 
 #' @return a list containing a number of rows and a data frame of metadata
 #'

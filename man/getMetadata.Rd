@@ -10,7 +10,12 @@
 getMetadata(url = "")
 }
 \arguments{
-\item{url}{- A Socrata resource URL, or a Socrata "human-friendly" URL}
+\item{url}{- A Socrata resource URL, or a Socrata "human-friendly" URL,
+or Socrata Open Data Application Program Interface (SODA) query
+requesting a comma-separated download format (.csv suffix),
+May include SoQL parameters, and it is now assumed to include SODA \code{limit}
+& \code{offset} parameters.
+Either use a compelete URL or use parameters below to construct your URL.}
 }
 \value{
 a list containing a number of rows and a data frame of metadata
@@ -21,8 +26,10 @@ This can be either in format
 'http://data.cityofchicago.org/api/views/xzkq-xp2w/columns.json', which this function also uses.
 }
 \examples{
-getMetadata(url = "http://data.cityofchicago.org/resource/y93d-d9e3.csv")
+\dontrun{
+asd <- getMetadata(url = "http://data.cityofchicago.org/resource/y93d-d9e3.csv")
 getMetadata(url = "https://data.cityofchicago.org/resource/6zsd-86xi.json")
-getMetadata(url = "https://data.cityofboston.gov/City-Services/311-Service-Requests/awu8-dc52")
+wqfef <- getMetadata(url = "https://data.cityofboston.gov/resource/awu8-dc52")
+}
 }
 

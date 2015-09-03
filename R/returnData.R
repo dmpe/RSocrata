@@ -17,8 +17,6 @@
 #' @importFrom httr content
 #' @importFrom geojsonio geojson_read
 #' @param response - an httr response object
-#' @param geo_parse - parse, see \link{geojson_read}
-#' @param geo_what - what, see \link{geojson_read}
 #' @return data frame, possibly empty
 #' @noRd
 getContentAsDataFrame <- function(response) {
@@ -71,13 +69,16 @@ getContentAsDataFrame <- function(response) {
 #' numbers of columns of arguments do not match} when using "json" output, this is a known bug 
 #' \url{https://github.com/Chicago/RSocrata/issues/19}! Use instead csv output for time being. 
 #'
-#' @return a data frame with POSIX dates if csv or json. 
+#' @return a data frame with POSIX dates in csv or json format. 
 #' @author Hugh J. Devlin, Ph. D. \email{Hugh.Devlin@@cityofchicago.org}
 #' 
-# @examples
-# df_csv <- read.socrata(url = "http://soda.demo.socrata.com/resource/4334-bgaj.csv")
-# df_manual2<-read.socrata(domain="http://data.cityofchicago.org/",fourByFour = "ydr8-5enu")
-# df_manual3<-read.socrata(domain="http://data.cityofchicago.org/",fourByFour="ydr8-5enu",output="csv")
+#' @examples
+#' \dontrun{
+#' df_csv <- read.socrata(url = "http://soda.demo.socrata.com/resource/4334-bgaj.csv")
+#' df_manual2<-read.socrata(domain="http://data.cityofchicago.org/",fourByFour = "ydr8-5enu")
+#' df_manual3<-read.socrata(domain="http://data.cityofchicago.org/",
+#' fourByFour="ydr8-5enu",output="csv")
+#' }
 #' 
 #' @importFrom httr parse_url build_url
 #' @importFrom mime guess_type
@@ -96,7 +97,7 @@ read.socrata <- function(url = NULL, app_token = NULL, limit = 50000, domain = N
   validUrl <- validateUrl(url, app_token) 
   parsedUrl <- httr::parse_url(paste0(validUrl, "&$limit=", limit))
   
-  mimeType <- mime::guess_type(clearnParams2(parsedUrl$path))
+  mimeType <- mime::guess_type(cleanAmp(parsedUrl$path))
   
   if (!(mimeType %in% c("text/csv","application/json", "text/plain"))) {
     stop(mimeType, " not a supported data format. Try JSON or CSV. For GeoJSON use: read.socrataGEO")
@@ -106,7 +107,7 @@ read.socrata <- function(url = NULL, app_token = NULL, limit = 50000, domain = N
   results <- getContentAsDataFrame(response)
   dataTypes <- getSodaTypes(response)
   
-  rowCount <- as.numeric(getMetadata(clearnParams(validUrl))[1])
+  rowCount <- as.numeric(getMetadata(cleanQuest(validUrl))[1])
   
   ## More to come? Loop over pages implicitly
   while (nrow(results) < rowCount) { 
@@ -129,21 +130,25 @@ read.socrata <- function(url = NULL, app_token = NULL, limit = 50000, domain = N
 
 #' Download GeoJSON data using geojsonio package
 #' 
-#' @param what - What to return format is choosen. One of list or \code{\link{sp}}. Default: list.
-#' @param parse - Parse geojson to data.frame like structures if possible or not. Default: FALSE (not)
-#' \link{geojsonio}
+#' @param what - \link{geojsonio} What to return format is choosen. One of list (default) or \code{\link{sp}}.
+#' @param parse - \link{geojsonio} Parse geojson to data.frame like structures if possible or not. Default: FALSE (~not)
+#' @param method - \link{geojsonio} 
+#' @param ... - other arguments from \link{geojsonio} package for geojson_read method
+#' @inheritParams read.socrata
 #' 
 #' @importFrom geojsonio geojson_read
 #' @importFrom httr build_url parse_url
 #' @importFrom mime guess_type
 #' 
-#' @return Returns a \code{\link{sp}}, which is the default option here. 
-#' 
+#' @return Returns a \code{\link{sp}} object, which is the default option here. 
+#'
 #' @examples 
+#' \dontrun{
 #' df_geo <- read.socrataGEO(url = "https://data.cityofchicago.org/resource/6zsd-86xi.geojson")
-#' 
+#' }
 #' @export
-read.socrataGEO <- function(url = NULL, limit = 50000, offset = 0, method = "local", what = "sp", parse = FALSE, ...) {
+read.socrataGEO <- function(url = NULL, limit = 50000, offset = 0, method = "local", what = "sp", 
+                            parse = FALSE, ...) {
   
   validUrl <- httr::parse_url(url)
   mimeType <- mime::guess_type(validUrl$path)

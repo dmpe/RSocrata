@@ -1,22 +1,22 @@
-# Checks the validity of the syntax for a potential Socrata dataset Unique Identifier, also known as a 4x4.
-#
-# @description Will check the validity of a potential dataset unique identifier
-# supported by Socrata. It will provide an exception if the syntax
-# does not align to Socrata unique identifiers. It only checks for
-# the validity of the syntax, but does not check if it actually exists.
-# 
-# @param fourByFour - a string; character vector of length one
-# @return TRUE if is valid Socrata unique identifier, FALSE otherwise
-# @author Tom Schenk Jr \email{tom.schenk@@cityofchicago.org}
-# @examples 
-# isFourByFour(fourByFour = "4334-bgaj")
-# isFourByFour("433-bgaj")
-# isFourByFour(fourByFour = "4334-!gaj")
+#' Checks the validity of the syntax for a potential Socrata dataset Unique Identifier, also known as a 4x4.
+#'
+#' @description Will check the validity of a potential dataset unique identifier
+#' supported by Socrata. It will provide an exception if the syntax
+#' does not align to Socrata unique identifiers. It only checks for
+#' the validity of the syntax, but does not check if it actually exists.
+#' 
+#' @param fourByFour - a string; character vector of length one
+#' @return TRUE if is valid Socrata unique identifier, FALSE otherwise
+#' @author Tom Schenk Jr \email{tom.schenk@@cityofchicago.org}
+#' @examples 
+#' isFourByFour(fourByFour = "4334-bgaj")
+#' isFourByFour("433-bgaj")
+#' isFourByFour(fourByFour = "4334-!gaj")
 #' @export
 isFourByFour <- function(fourByFour = "") {
   
   if (nchar(fourByFour) == 9) {
-    if(identical(grepl("[[:alnum:]]{4}-[[:alnum:]]{4}", fourByFour), TRUE)) {
+    if (identical(grepl("[[:alnum:]]{4}-[[:alnum:]]{4}", fourByFour), TRUE)) {
       return(TRUE)
     } else {
       return(FALSE)
@@ -39,7 +39,8 @@ isFourByFour <- function(fourByFour = "") {
 # @author Hugh J. Devlin, Ph. D. \email{Hugh.Devlin@@cityofchicago.org}
 # @examples
 # fieldName("Number.of.Stations") # number_of_stations
-#' @export
+# @noRd
+# @export
 fieldName <- function(humanName = "") {
   tolower(gsub('\\.', '_', humanName))
 }
@@ -57,7 +58,8 @@ fieldName <- function(humanName = "") {
 # posixify("2014-10-13T23:00:00")
 # posixify("09/14/2012 10:38:01 PM")
 # posixify("09/14/2012")
-#' @export
+# @noRd 
+# @export
 posixify <- function(x = "") {
   
   # https://github.com/Chicago/RSocrata/issues/24
@@ -75,33 +77,38 @@ posixify <- function(x = "") {
     
   } else if (any(regexpr("^[[:digit:]]{1,2}/[[:digit:]]{1,2}/[[:digit:]]{4}$", x)[1] == TRUE)) {
     # short date format
-    strptime(x, format="%m/%d/%Y") 
+    strptime(x, format = "%m/%d/%Y") 
     
   } else {
     # long date-time format
-    strptime(x, format="%m/%d/%Y %I:%M:%S %p") 
+    strptime(x, format = "%m/%d/%Y %I:%M:%S %p") 
     
   }
   
 }
 
-# Clean everything after "?", i.e. delete every query parameters
+# Clean everything after "?", "&"
 # 
 # @source https://stackoverflow.com/questions/5631384/remove-everything-after-a-certain-character
 # @source http://rfunction.com/archives/1499
 # 
 # @examples
-# clearnParams(url = "http://data.cityofchicago.org/resource/y93d-d9e3.csv?%24order=debarment_date&%24limit=50000")
-# 
-#' @export
-clearnParams <- function(url = "") {
+# cleanQuest(url = "http://data.cityofchicago.org/resource/y93d-d9e3.csv?%24order=debarment_date&%24limit=50000")
+# @export
+cleanQuest <- function(url = "") {
   cleanURL <- strsplit(url, "?",  fixed = TRUE)
   return(cleanURL[[1]][1])
 }
 
-#' @export
-clearnParams2 <- function(url = "") {
+# @export
+cleanAmp <- function(url = "") {
   cleanURL <- strsplit(url, "&",  fixed = TRUE)
+  return(cleanURL[[1]][1])
+}
+
+# @export
+cleanDot <- function(url = "") {
+  cleanURL <- strsplit(url, ".",  fixed = TRUE)
   return(cleanURL[[1]][1])
 }
 

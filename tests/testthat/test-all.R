@@ -75,7 +75,7 @@ test_that("API Conflict", {
   expect_equal(9, ncol(df), label="columns")
 })
 
-test_that("readAPIConflictHumanReadable", {
+test_that("read API Conflict HumanReadable", {
   df <- read.socrata("https://soda.demo.socrata.com/dataset/USGS-Earthquake-Reports/4334-bgaj?$$app_token=ew2rEMuESuzWPqMkyPfOSGJgE", app_token="ew2rEMuESuzWPqMkyPfOSUSER")
   expect_equal(1007, nrow(df), label="rows")
   expect_equal(9, ncol(df), label="columns")
