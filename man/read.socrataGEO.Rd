@@ -4,20 +4,12 @@
 \alias{read.socrataGEO}
 \title{Download GeoJSON data using geojsonio package}
 \usage{
-read.socrataGEO(url = NULL, limit = 50000, offset = 0, method = "local",
-  what = "sp", parse = FALSE, ...)
+read.socrataGEO(url = "", method = "local", what = "sp", parse = FALSE,
+  ...)
 }
 \arguments{
 \item{url}{- A Socrata resource URL, or a Socrata "human-friendly" URL,
-or Socrata Open Data Application Program Interface (SODA) query
-requesting a comma-separated download format (.csv suffix),
-May include SoQL parameters, and it is now assumed to include SODA \code{limit}
-& \code{offset} parameters.
-Either use a compelete URL or use parameters below to construct your URL.}
-
-\item{limit}{- defaults to the max of 50000. See \url{http://dev.socrata.com/docs/paging.html}.}
-
-\item{offset}{- defaults to 0. See \url{http://dev.socrata.com/docs/paging.html}.}
+requesting a .geojson suffix.}
 
 \item{method}{- \link{geojsonio} One of "web" or "local" (default). Matches on partial strings.}
 

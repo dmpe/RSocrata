@@ -40,11 +40,10 @@ Deprecated ```httr::guess_media()``` and implemented ```mime::guess_type()```
 
 ### 1.7 (see roadmap)
 
-* Add a small vignette with existing examples
+* Add a small vignette with existing & new GeoJSON examples with ```leaflet``` map package
 * Mostly internal changes which should not influence the current behaviour ([#53](https://github.com/Chicago/RSocrata/pull/53))
-    * Add support of a `floating timestamp`
-    * New error handling function
-    * New functions returning metadata and GeoJSON data (similar to the read.socrata)
-    * Further work on queries
-    * Should be fixing #27 + #24
+* Add support of a `floating timestamp`
+* New error handling function
+* New functions returning metadata and GeoJSON data (similar to the read.socrata)
+* Should be fixing #27 + #24
 
