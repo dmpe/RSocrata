@@ -1,8 +1,8 @@
 #' Return metadata about a Socrata dataset
 #' 
-#' This can be either in format 
-#' 'http://data.cityofchicago.org/api/views/xzkq-xp2w/rows.json' or
-#' 'http://data.cityofchicago.org/api/views/xzkq-xp2w/columns.json', which this function also uses.
+#' This function returns metadata about a dataset. Generally, such metadata can be accessed
+#' with browser at \code{http://DOMAIN/api/views/FOUR-FOUR/rows.json} or
+#' \code{http://DOMAIN/api/views/FOUR-FOUR/columns.json} (this is used here). 
 #' 
 #' @inheritParams read.socrata
 #' 
@@ -15,17 +15,18 @@
 #' wqfef <- getMetadata(url = "https://data.cityofboston.gov/resource/awu8-dc52")
 #' }
 #' 
-#' @return a list containing a number of rows and a data frame of metadata
+#' @return a list (!) containing a number of rows and a data frame of metadata
 #'
 #' @importFrom jsonlite fromJSON
 #' @importFrom httr parse_url build_url
 #' @importFrom mime guess_type
-#' 
+#'  
 #' @export
 getMetadata <- function(url = "") {
   
   urlParsedBase <- httr::parse_url(url)
   mimeType <- mime::guess_type(urlParsedBase$path)
+  
   # use function below to get them using =COUNT(*) SODA query
   gQRC <- getQueryRowCount(urlParsedBase, mimeType) 
   
@@ -38,13 +39,15 @@ getMetadata <- function(url = "") {
   URL <- httr::build_url(urlParsed)
   df <- jsonlite::fromJSON(URL)
   
-  # number of rows can be "cached". If so, then it calculates the maximum number of rows from all non-null 
-  # and null fields. If not, then it uses function below, using that query. 
+  # number of rows can be sometimes "cached". If yes, then below we calculate the maximum number of 
+  # rows from all non-null and null fields. 
+  # If not, then it uses "getQueryRowCount" fnct with SODA =COUNT(*) SODA query.
   rows <- if (suppressWarnings(max(df$cachedContents$non_null + df$cachedContents$null)) > 0) {
     suppressWarnings(max(df$cachedContents$non_null + df$cachedContents$null))
   } else {
     as.numeric(gQRC$COUNT)
   }
+  
   return(list(rows, df))
 }
 

@@ -18,12 +18,12 @@ May include SoQL parameters, and it is now assumed to include SODA \code{limit}
 Either use a compelete URL or use parameters below to construct your URL.}
 }
 \value{
-a list containing a number of rows and a data frame of metadata
+a list (!) containing a number of rows and a data frame of metadata
 }
 \description{
-This can be either in format
-'http://data.cityofchicago.org/api/views/xzkq-xp2w/rows.json' or
-'http://data.cityofchicago.org/api/views/xzkq-xp2w/columns.json', which this function also uses.
+This function returns metadata about a dataset. Generally, such metadata can be accessed
+with browser at \code{http://DOMAIN/api/views/FOUR-FOUR/rows.json} or
+\code{http://DOMAIN/api/views/FOUR-FOUR/columns.json} (this is used here).
 }
 \examples{
 \dontrun{

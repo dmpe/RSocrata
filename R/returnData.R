@@ -59,7 +59,7 @@ getContentAsDataFrame <- function(response) {
 #' @param query - Based on query language called the "Socrata Query Language" ("SoQL"), see 
 #' \url{http://dev.socrata.com/docs/queries.html}.
 #' @param limit - defaults to the max of 50000. See \url{http://dev.socrata.com/docs/paging.html}.
-#' @param offset - defaults to the max of 0. See \url{http://dev.socrata.com/docs/paging.html}.
+#' @param offset - defaults to 0. See \url{http://dev.socrata.com/docs/paging.html}.
 #' @param output - defaults to csv; one of \code{"csv" or "json"}. 
 #' @param domain - A Socrata domain, e.g \url{http://data.cityofchicago.org} 
 #' @param fourByFour - a unique 4x4 identifier, e.g. "ydr8-5enu". See more \code{\link{isFourByFour}}
@@ -132,7 +132,7 @@ read.socrata <- function(url = NULL, app_token = NULL, limit = 50000, domain = N
 #' 
 #' @param what - \link{geojsonio} What to return format is choosen. One of list (default) or \code{\link{sp}}.
 #' @param parse - \link{geojsonio} Parse geojson to data.frame like structures if possible or not. Default: FALSE (~not)
-#' @param method - \link{geojsonio} 
+#' @param method - \link{geojsonio} One of "web" or "local" (default). Matches on partial strings.
 #' @param ... - other arguments from \link{geojsonio} package for geojson_read method
 #' @inheritParams read.socrata
 #' 
@@ -158,8 +158,7 @@ read.socrataGEO <- function(url = NULL, limit = 50000, offset = 0, method = "loc
   } 
   
   return(results)
-  
-}
+}  
 
 #' Get the SoDA 2 data types
 #'

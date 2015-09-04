@@ -17,9 +17,9 @@ Either use a compelete URL or use parameters below to construct your URL.}
 
 \item{limit}{- defaults to the max of 50000. See \url{http://dev.socrata.com/docs/paging.html}.}
 
-\item{offset}{- defaults to the max of 0. See \url{http://dev.socrata.com/docs/paging.html}.}
+\item{offset}{- defaults to 0. See \url{http://dev.socrata.com/docs/paging.html}.}
 
-\item{method}{- \link{geojsonio}}
+\item{method}{- \link{geojsonio} One of "web" or "local" (default). Matches on partial strings.}
 
 \item{what}{- \link{geojsonio} What to return format is choosen. One of list (default) or \code{\link{sp}}.}
 

@@ -27,7 +27,7 @@ portal \url{http://dev.socrata.com/consumers/getting-started.html}}
 \item{query}{- Based on query language called the "Socrata Query Language" ("SoQL"), see
 \url{http://dev.socrata.com/docs/queries.html}.}
 
-\item{offset}{- defaults to the max of 0. See \url{http://dev.socrata.com/docs/paging.html}.}
+\item{offset}{- defaults to 0. See \url{http://dev.socrata.com/docs/paging.html}.}
 
 \item{output}{- defaults to csv; one of \code{"csv" or "json"}.}
 }

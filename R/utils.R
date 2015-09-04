@@ -87,13 +87,14 @@ posixify <- function(x = "") {
   
 }
 
-# Clean everything after "?", "&"
+# Clean everything after "?", "&" or "."
 # 
 # @source https://stackoverflow.com/questions/5631384/remove-everything-after-a-certain-character
 # @source http://rfunction.com/archives/1499
 # 
 # @examples
 # cleanQuest(url = "http://data.cityofchicago.org/resource/y93d-d9e3.csv?%24order=debarment_date&%24limit=50000")
+# @returns http://data.cityofchicago.org/resource/y93d-d9e3.csv
 # @export
 cleanQuest <- function(url = "") {
   cleanURL <- strsplit(url, "?",  fixed = TRUE)
