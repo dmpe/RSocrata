@@ -13,14 +13,14 @@ requesting a .geojson suffix.}
 
 \item{method}{- \link{geojsonio} One of "web" or "local" (default). Matches on partial strings.}
 
-\item{what}{- \link{geojsonio} What to return format is choosen. One of list (default) or \code{\link{sp}}.}
+\item{what}{- \link{geojsonio} What to return format is choosen. One of list (default) or \code{sp}.}
 
 \item{parse}{- \link{geojsonio} Parse geojson to data.frame like structures if possible or not. Default: FALSE (~not)}
 
 \item{...}{- other arguments from \link{geojsonio} package for geojson_read method}
 }
 \value{
-Returns a \code{\link{sp}} object, which is the default option here.
+Returns a \code{sp} object, which is the default option here.
 }
 \description{
 Download GeoJSON data using geojsonio package

@@ -84,6 +84,7 @@ getContentAsDataFrame <- function(response) {
 #' @importFrom mime guess_type
 #' @importFrom plyr rbind.fill
 #' @importFrom dplyr bind_rows
+#' @importFrom data.table rbindlist
 #' 
 #' @export
 read.socrata <- function(url = NULL, app_token = NULL, limit = 50000, domain = NULL, fourByFour = NULL, 
@@ -115,7 +116,7 @@ read.socrata <- function(url = NULL, app_token = NULL, limit = 50000, domain = N
     query_url <- paste0(validUrl, ifelse(is.null(parsedUrl$query), "?", "&"), "$offset=", nrow(results), "&$limit=", limit)
     response <- errorHandling(query_url)
     page <- getContentAsDataFrame(response)
-    results <- plyr::rbind.fill(results, page) # accumulate data
+    results <- data.table::rbindlist(list(results, page), fill = TRUE) # accumulate data
   }	
   
   # Convert Socrata calendar dates to POSIX format

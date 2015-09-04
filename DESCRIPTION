@@ -21,8 +21,7 @@ Imports:
     jsonlite (>= 0.9.16),
     mime (>= 0.4), 
     geojsonio (>= 0.1.4), 
-    plyr (>= 0.4.3), 
-    dplyr (>= 0.4.3)
+    data.table (>= 1.9.5)
 Suggests: 
     testthat (>= 0.10.0),
     roxygen2 (>= 4.1.1),

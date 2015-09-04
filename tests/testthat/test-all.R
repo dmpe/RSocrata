@@ -107,8 +107,8 @@ test_that("A JSON test with uneven row lengths", {
   skip_on_travis()
   skip("Not done") # working with bare jsonlite::fromJSON
   # Both should be OK
-  data <- read.socrata(url = "https://data.cityofchicago.org/resource/kn9c-c2s2.json")
-  awqe <- read.socrata(url = "http://data.ny.gov/resource/eda3-in2f.json")
+  data <- read.socrata(url = "https://data.cityofchicago.org/resource/kn9c-c2s2.csv")
+  awqe <- read.socrata(url = "http://data.ny.gov/resource/eda3-in2f.csv")
   
   expect_more_than(ncol(data), 10)
 })
@@ -123,7 +123,7 @@ test_that("RSocrata hangs when passing along SoDA queries with small number of r
   df500 <- read.socrata("https://data.cityofchicago.org/resource/xzkq-xp2w.json?$limit=500") # Hangs
   df250 <- read.socrata("https://data.cityofchicago.org/resource/xzkq-xp2w.json?$limit=250") # Hangs
   df100 <- read.socrata("https://data.cityofchicago.org/resource/xzkq-xp2w.json?$limit=100") # Hangs
-  df50 <- read.socrata("https://data.cityofchicago.org/resource/xzkq-xp2w.json?$limit=50") # Hangs
+  df50 <- read.socrata("https://data.cityofchicago.org/resource/xzkq-xp2w.csv?$limit=50") # Hangs
   df25 <- read.socrata("https://data.cityofchicago.org/resource/xzkq-xp2w.json?$limit=25") # Hangs
   df10 <- read.socrata("https://data.cityofchicago.org/resource/xzkq-xp2w.json?$limit=10") # Hangs
   df5 <- read.socrata("https://data.cityofchicago.org/resource/xzkq-xp2w.json?$limit=5") # Hangs
