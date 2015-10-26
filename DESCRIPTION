@@ -22,7 +22,7 @@ Imports:
     geojsonio (>= 0.1.4), 
     plyr (>= 1.8.3)
 Suggests: 
-    testthat (>= 0.10.0),
+    testthat (>= 0.11.0),
     roxygen2 (>= 4.1.1),
     knitr (>= 1.11), 
     leaflet (>= 1.0.0)

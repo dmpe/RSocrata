@@ -29,3 +29,20 @@ test_that("Test comparing columns against data.json specifications", {
   # Check that all names in data.json are accounted for in ls.socrata return
   expect_equal(rep(TRUE, length(names(df))), names(df) %in% c(core_names))
 })
+
+test_that("we are able to append 4x4 in read.socrata", {
+  # https://github.com/Chicago/RSocrata/pull/56#issuecomment-151204218
+  
+  ls_chicago <- ls.socrata("https://data.cityofchicago.org")
+  four_by_four <- substr(ls_chicago$identifier, 42, 50)
+  
+  read.socrata(domain = "http://data.cityofchicago.org", 
+               fourByFour = four_by_four[1])
+})
+
+
+
+
+
+
+

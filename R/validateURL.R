@@ -72,7 +72,6 @@ validateUrl <- function(url = "") {
   if ( substr(parsedUrl$path, 1, 9) == "resource/") {
     return(httr::build_url(parsedUrl)) # resource url already
   } else {
-    message("BEWARE: RSocrata no longer supports human readable URLs, thus we will convert it to the SODA ones (with resource/xxxx-xxxx.json) instead.")
     parsedUrl$path <- paste0("resource/", cleanDot(fourByFour), ".json")
     return(httr::build_url(parsedUrl)) # resource url already
   } 

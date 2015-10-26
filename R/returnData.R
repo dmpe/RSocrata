@@ -116,7 +116,7 @@ read.socrata <- function(url = NULL, app_token = NULL, limit = 50000, domain = N
   validUrl <- validateUrl(url) 
   parsedUrl <- httr::parse_url(validUrl)
   
-  response <- errorHandling(validUrl, app_token)
+  response <- errorHandling(validUrl, app_token = app_token)
   results <- getContentAsDataFrame(response)
   dataTypes <- getSodaTypes(response)
   

@@ -27,6 +27,7 @@ test_that("read SoQL", {
   skip("because of query")
   skip_on_cran()
   skip_on_travis()
+  skip_on_appveyor()
   df <- read.socrata("http://soda.demo.socrata.com/resource/4334-bgaj.json?$select=region")
   expect_equal(1007, nrow(df), label="rows")
   expect_equal(1, ncol(df), label="columns")
@@ -36,6 +37,7 @@ test_that("read SoQL Column Not Found (will fail)", {
   skip("because of query")
   skip_on_cran()
   skip_on_travis()
+  skip_on_appveyor()
   # SoQL API uses field names, not human names
   expect_error(read.socrata("http://soda.demo.socrata.com/resource/4334-bgaj.csv?$select=Region"))
 })
@@ -44,10 +46,10 @@ test_that("URL is private (Unauthorized) (will fail)", {
   expect_error(read.socrata("http://data.cityofchicago.org/resource/j8vp-2qpg.json"))
 })
 
-test_that("it will not read Socrata Human Readable URL", {
-  expect_warning(read.socrata(url="https://soda.demo.socrata.com/dataset/USGS-Earthquake-Reports/4334-bgaj"))
-  # expect_equal(1007, nrow(df), label="rows")
-  # expect_equal(9, ncol(df), label="columns")
+test_that("it will read Socrata Human Readable URL", {
+  df <- read.socrata(url="https://soda.demo.socrata.com/dataset/USGS-Earthquake-Reports/4334-bgaj")
+  expect_equal(1007, nrow(df), label="rows")
+  expect_equal(11, ncol(df), label="columns")
 })
 
 test_that("format is not supported", {
@@ -69,6 +71,7 @@ test_that("A JSON test with uneven row lengths", {
 test_that("RSocrata hangs when passing along SoDA queries with small number of results ", {
   skip_on_cran()
   skip_on_travis()
+  skip_on_appveyor()
   skip("Test works, but is just to large & long to run it")
   
   df500 <- read.socrata(url = "https://data.cityofchicago.org/resource/xzkq-xp2w.json", limit =500) 
